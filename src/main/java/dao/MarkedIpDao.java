@@ -14,9 +14,9 @@ import java.util.Objects;
  * @Date: 16:27 2018/2/23
  * @Desc:
  */
-public class MarkedIp {
+public class MarkedIpDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MarkedIp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MarkedIpDao.class);
 
     /**
      * 根据主键ID查询IP
@@ -58,18 +58,19 @@ public class MarkedIp {
     }
 
     /**
-     * 更新标记IP
+     * 更新IP
      * @param connection 连接
-     * @param ip 标记IP
+     * @param newIp 新标记IP
+     * @param oldIp 被更改IP的IP
      * @param timestamp 时间戳
      */
-    public static void updateIp(Connection connection, Long ip, Timestamp timestamp){
+    public static void updateIp(Connection connection, Long newIp, Long oldIp, Timestamp timestamp){
 
         Statement statement = null;
 
         try {
             statement = connection.createStatement();
-            statement.executeUpdate("UPDATE marked_ip SET MI_IP = " + ip + ",MI_TIME = " + timestamp);
+            statement.executeUpdate("UPDATE marked_ip SET MI_IP = " + newIp + " , MI_TIME = '" + timestamp + "' WHERE MI_IP = " + oldIp);
             LOGGER.info("更新IP成功");
         }catch (Exception e){
             LOGGER.error("更新IP失败:" + e.getMessage());

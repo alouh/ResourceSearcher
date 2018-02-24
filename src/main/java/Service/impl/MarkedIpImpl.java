@@ -2,11 +2,12 @@ package Service.impl;
 
 import Service.MarkedIpService;
 import dao.DataSourceConfig;
-import dao.MarkedIp;
+import dao.MarkedIpDao;
 import utils.ThreadParameter;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 /**
  * @Author: HanJiafeng
@@ -19,18 +20,25 @@ public class MarkedIpImpl implements MarkedIpService {
     public synchronized Long getIp(int id) {
 
         Long ip = 0L;
+        Connection connection = null;
 
         try {
-            Connection connection = DataSourceConfig.DATA_SOURCE.getConnection();//获取连接
+            connection = DataSourceConfig.DATA_SOURCE.getConnection();//获取连接
 
-            ip = MarkedIp.getIp(connection,id);//获取IP地址
+            ip = MarkedIpDao.getIp(connection,id);//获取IP地址
 
             Long newIp = ip + ThreadParameter.getFirstSpider_IpCount();//计算新的IP
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());//获取时间戳
 
-            MarkedIp.updateIp(connection,newIp,timestamp);//更新
+            MarkedIpDao.updateIp(connection,newIp,ip,timestamp);//更新
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            try {
+                Objects.requireNonNull(connection).close();//释放连接
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         return ip;
