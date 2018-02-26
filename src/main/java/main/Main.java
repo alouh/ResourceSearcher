@@ -1,8 +1,14 @@
 package main;
 
 import dao.DataSourceConfig;
+import gui.MainFrame;
+import gui.ParameterDialog;
 import net.IpSearch.FirstSpider;
 import net.PageSearch.SecondSpider;
+
+import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @Author: HanJiafeng
@@ -15,15 +21,17 @@ public class Main {
 
         init();
 
-        /*FirstSpider firstSpider = new FirstSpider();
-        Thread firstThread = new Thread(firstSpider);
-        firstThread.start();*/
+        MainFrame mainFrame = new MainFrame();
 
-        SecondSpider secondSpider = new SecondSpider();
-        Thread secondThread = new Thread(secondSpider);
-        secondThread.start();
+        boolean isParameterRight = ParameterDialog.showDialog();//是否是初始化设置参数
+        if (isParameterRight) {//是显示主面板
+            mainFrame.setVisible(true);
+        }
     }
 
+    /**
+     * 初始化数据库连接池
+     */
     private static void init(){
 
         DataSourceConfig.init();

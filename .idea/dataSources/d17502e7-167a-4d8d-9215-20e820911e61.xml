@@ -964,12 +964,18 @@
       <DataType>int(1)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="240" parent="230" name="PRIMARY">
+    <column id="240" parent="230" name="PU_FLAG">
+      <Position>4</Position>
+      <Comment>是否可用标记</Comment>
+      <DataType>int(1)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="241" parent="230" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>PU_ID</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="241" parent="231" name="id">
+    <column id="242" parent="231" name="id">
       <Position>1</Position>
       <Comment>连接池测试表</Comment>
       <DataType>int(1)|0</DataType>
@@ -977,37 +983,37 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="242" parent="231" name="PRIMARY">
+    <key id="243" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="243" parent="232" name="SI_ID">
+    <column id="244" parent="232" name="SI_ID">
       <Position>1</Position>
       <DataType>int(10)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="244" parent="232" name="SI_IP">
+    <column id="245" parent="232" name="SI_IP">
       <Position>2</Position>
       <Comment>主机地址</Comment>
       <DataType>bigint(20)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="232" name="SI_PORT">
+    <column id="246" parent="232" name="SI_PORT">
       <Position>3</Position>
       <Comment>开放端口</Comment>
       <DataType>int(5)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="232" name="SI_FLAG">
+    <column id="247" parent="232" name="SI_FLAG">
       <Position>4</Position>
       <Comment>标志位,0:未使用;1:已使用</Comment>
       <DataType>int(1)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="247" parent="232" name="PRIMARY">
+    <key id="248" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>SI_ID</ColNames>
       <Primary>1</Primary>

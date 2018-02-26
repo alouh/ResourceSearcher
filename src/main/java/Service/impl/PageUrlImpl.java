@@ -34,4 +34,27 @@ public class PageUrlImpl implements PageUrlService {
             }
         }
     }
+
+    @Override
+    public int countAvailableUrl() {
+
+        int count = 0;
+        Connection connection = null;
+
+        try {
+            connection = DataSourceConfig.DATA_SOURCE.getConnection();
+
+            count = PageUrlDao.countAvailableUrl(connection);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                Objects.requireNonNull(connection).close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return count;
+    }
 }

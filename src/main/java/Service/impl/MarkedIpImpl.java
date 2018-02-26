@@ -17,7 +17,7 @@ import java.util.Objects;
 public class MarkedIpImpl implements MarkedIpService {
 
     @Override
-    public synchronized Long getIp(int id) {
+    public synchronized Long getIp(int id,int ipCount) {
 
         Long ip = 0L;
         Connection connection = null;
@@ -27,7 +27,7 @@ public class MarkedIpImpl implements MarkedIpService {
 
             ip = MarkedIpDao.getIp(connection,id);//获取IP地址
 
-            Long newIp = ip + ThreadParameter.getFirstSpider_IpCount();//计算新的IP
+            Long newIp = ip + ipCount;//计算新的IP
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());//获取时间戳
 
             MarkedIpDao.updateIp(connection,newIp,ip,timestamp);//更新

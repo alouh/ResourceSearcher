@@ -3,10 +3,8 @@ package dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.IPConvector;
-import utils.ThreadParameter;
 
 import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -52,15 +50,14 @@ public class ServiceIpDao {
     /**
      * 获取指定数量的SocketAddress
      * @param connection 连接
+     * @param secondSpiderAddressCount 二级蜘蛛单次任务量
      * @return 套接字地址list
      */
-    public static List<InetSocketAddress> getSocketAddress(Connection connection){
+    public static List<InetSocketAddress> getSocketAddress(Connection connection, int secondSpiderAddressCount){
 
         Statement statement = null;
         ResultSet resultSet = null;
         List<InetSocketAddress> socketAddressList = new ArrayList<>();
-
-        int secondSpiderAddressCount = ThreadParameter.getSecondSpider_AddressCount();//二级蜘蛛每次取出个数
 
         try {
             statement = connection.createStatement();
@@ -121,6 +118,36 @@ public class ServiceIpDao {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static int countAvailableIp(Connection connection){
+
+        Statement statement = null;
+        ResultSet resultSet = null;
+        int count = 0;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT count(*) FROM service_ip WHERE SI_FLAG = 0");
+            while (resultSet.next()){
+                count = resultSet.getInt(1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                Objects.requireNonNull(resultSet).close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            try {
+                Objects.requireNonNull(statement).close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return count;
     }
 
 }

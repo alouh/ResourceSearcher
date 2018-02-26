@@ -3,6 +3,7 @@ package net.PageSearch;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Objects;
 
 /**
@@ -17,11 +18,17 @@ public class ContentCheck {
      * @param socketAddress 地址
      * @return 是否包含关键字
      */
-    public boolean check(InetSocketAddress socketAddress){
+    public boolean check(InetSocketAddress socketAddress,String[] keywordArray){
 
         String page = getPage(socketAddress);
 
-        return page.contains("百度");
+        for (String keyword : keywordArray){
+            if (page.contains(keyword)){
+                return true;
+            }
+        }
+
+        return false;
 
     }
     /**
@@ -43,6 +50,7 @@ public class ContentCheck {
             sendPacket(outputStream,socketAddress);//发送请求报文
             inputStream = socket.getInputStream();
             page = receivePacket(inputStream);
+        }catch (SocketTimeoutException ignored){
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -93,18 +101,14 @@ public class ContentCheck {
      * 接收数据报文
      * @param inputStream 输入流
      */
-    private String receivePacket(InputStream inputStream){
+    private String receivePacket(InputStream inputStream) throws Exception{
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
-            String line;
-            while ((line = reader.readLine()) != null){
-                stringBuilder.append(line);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"utf-8"));
+        String line;
+        while ((line = reader.readLine()) != null){
+            stringBuilder.append(line);
         }
 
         return stringBuilder.toString();

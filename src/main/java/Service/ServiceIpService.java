@@ -10,7 +10,23 @@ import java.util.List;
  */
 public interface ServiceIpService {
 
+    /**
+     * 插入可用ip和端口
+     * @param ip 可用ip
+     * @param port 端口
+     */
     void insertIp(Long ip,int port);
 
-    List<InetSocketAddress> getSocketAddresses();
+    /**
+     * 获取指定数量的可用ip和端口
+     * @param secondSpiderAddressCount 指定数量
+     * @return 可用ip
+     */
+    List<InetSocketAddress> getSocketAddresses(int secondSpiderAddressCount);
+
+    /**
+     * 统计可用ip有多少
+     * @return 可用ip数量
+     */
+    int countAvailableIp();
 }

@@ -44,7 +44,7 @@ public class ServiceIpImpl implements ServiceIpService {
     }
 
     @Override
-    public List<InetSocketAddress> getSocketAddresses() {
+    public List<InetSocketAddress> getSocketAddresses(int secondSpiderAddressCount) {
 
         Connection connection = null;
         List<InetSocketAddress> socketAddressList = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ServiceIpImpl implements ServiceIpService {
             synchronized (syn) {
                 connection = DataSourceConfig.DATA_SOURCE.getConnection();
 
-                socketAddressList = ServiceIpDao.getSocketAddress(connection);//获得地址池
+                socketAddressList = ServiceIpDao.getSocketAddress(connection,secondSpiderAddressCount);//获得地址池
                 if (!socketAddressList.isEmpty()) {
                     ServiceIpDao.deleteUsed(connection, socketAddressList);//删除使用过的地址
                 }
@@ -68,5 +68,29 @@ public class ServiceIpImpl implements ServiceIpService {
         }
 
         return socketAddressList;
+    }
+
+    @Override
+    public int countAvailableIp() {
+
+        Connection connection = null;
+        int count = 0;
+        try {
+            synchronized (syn) {
+                connection = DataSourceConfig.DATA_SOURCE.getConnection();
+
+                count = ServiceIpDao.countAvailableIp(connection);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                Objects.requireNonNull(connection).close();//归还连接
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return count;
     }
 }

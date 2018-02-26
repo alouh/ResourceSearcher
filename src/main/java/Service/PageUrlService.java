@@ -8,4 +8,6 @@ package Service;
 public interface PageUrlService {
 
     void insertUrl(String url,int depth);
+
+    int countAvailableUrl();
 }

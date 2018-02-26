@@ -38,7 +38,7 @@ public class ThreadParameter {
         }
     }
 
-    public static int getFirstSpider_Count() {
+    /*public static int getFirstSpider_Count() {
 
         int a = 0;
         try {
@@ -82,5 +82,5 @@ public class ThreadParameter {
             e.printStackTrace();
         }
         return a;
-    }
+    }*/
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Objects;
 
@@ -33,5 +34,40 @@ public class PageUrlDao {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 统计可用url数
+     * @param connection 数据库连接
+     * @return 可用url数
+     */
+    public static int countAvailableUrl(Connection connection){
+
+        int count = 0;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT count(*) FROM page_url WHERE PU_FLAG = 0");
+            while (resultSet.next()){
+                count = resultSet.getInt(1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                Objects.requireNonNull(resultSet).close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            try {
+                Objects.requireNonNull(statement).close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return count;
     }
 }

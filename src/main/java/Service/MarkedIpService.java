@@ -7,5 +7,5 @@ package Service;
  */
 public interface MarkedIpService {
 
-    Long getIp(int id);
+    Long getIp(int id,int ipCount);
 }
